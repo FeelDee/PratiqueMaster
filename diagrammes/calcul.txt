@@ -1,0 +1,22 @@
+Poids de rajout journée : somme pondérée des préférences de tous les musiciens * facteurJournée
+
+Poids d'un musicien-pratique :
+(devoir de présence + fonction quadratique(duree) + trous) * preference
+
+Poids du rajout d'une pratique :
+poids = poidsHoraire		//ideal: 30 minutes
+musiciensJournee = musicienJournee U pratique.musique.musiciens
+pour chaque musicien dans pratique.musique.musiciens
+	si musicien n'est pas dans journee.musiciens
+		rajouter musicien dans journee.musiciens {new MusicienJournee(musicien)}
+		poids += devoir_de_presence
+	fin si
+	si trous	//musicien.tempsFin != pratique.tempsDebut
+		poids += nbTrous
+	fin si
+	pour chaque 15 minutes de pratique
+		musicien.duree += 1
+		poids += musicien.duree * facteur	//suite numérique pour fonction quadratique
+	fin pour
+fin pour
+return poids
