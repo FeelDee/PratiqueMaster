@@ -1,0 +1,4 @@
+# ignoring intellij files
+.DS_Store/*
+.idea/*
+*.iml
