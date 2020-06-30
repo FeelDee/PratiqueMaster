@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import java.util.Vector;
 
 public class Journee {
-    static final Integer POIDS_AJOUT_MUSICIEN = 10;
+    static final Integer POIDS_AJOUT_MUSICIEN = 200;
 
     LocalDate date;
     LocalTime heureDebut;
@@ -20,8 +20,8 @@ public class Journee {
         this.musiciens = new Vector<>();
     }
 
-    long ajouterPratique(Musique musique, Duration duree) {
-        long poids = 0;
+    Long ajouterPratique(Musique musique, Duration duree) {
+        Long poids = 0L;
         Pratique pratique = new Pratique(musique, heureFin, heureFin.plus(duree));
 
         for (Musicien musicien: musique.musiciens) {
@@ -35,6 +35,7 @@ public class Journee {
         }
 
         heureFin = pratique.heureFin;
+        pratiques.add(pratique);
         return poids;
     }
 
@@ -43,8 +44,8 @@ public class Journee {
         Journee copy = new Journee(date, heureDebut);
         copy.heureFin = heureFin;
 
-        //shallow copy
-        copy.pratiques = pratiques;
+        //shallow copy of values
+        copy.pratiques = new Vector<>(pratiques);
 
         //deep copy
         for (MusicienJournee mj: musiciens) {

@@ -14,7 +14,9 @@ public class Main {
         musiques.add(new Musique("Hold the line", new Musicien[]{etienne, sendy}, Duration.ofMinutes(120)));
         musiques.add(new Musique("Free Bird", new Musicien[]{etienne, thomas}, Duration.ofMinutes(120)));
         Requis requis = new Requis(calendrier, musiques);
-        Vector<Noeud> exemple = Noeud.commencer(requis);
+        Graphe graphe = new Graphe(requis);
+
+        graphe.meilleurePlanification();
 
         System.out.println("fini :)");
     }

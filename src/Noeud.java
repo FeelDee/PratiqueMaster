@@ -1,17 +1,16 @@
-import javafx.scene.transform.Scale;
-
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Vector;
 
 public class Noeud {
-    long poids;
+    Long poids;
     Vector<Journee> planification;
 
     Requis requis;
 
     private Noeud(Requis requis, Vector<Journee> planification) {
+        this.poids = 0L;
         this.requis = requis;
         this.planification = planification;
     }
@@ -36,18 +35,18 @@ public class Noeud {
         }
     }
 
-    Vector<Noeud> voisins() {
+    Noeud[] voisins() {
         Vector<Noeud> voisins = new Vector<>();
 
         for (Journee journee: planification) {
             for (Musique musique: requis.musiques) {
                 voisins.add(new Noeud(this, musique, Duration.ofMinutes(15), journee.date));
-                voisins.add(new Noeud(this, musique, Duration.ofMinutes(30), journee.date));
-                voisins.add(new Noeud(this, musique, Duration.ofMinutes(45), journee.date));
             }
         }
 
-        return voisins;
+        Noeud[] res = new Noeud[voisins.size()];
+        voisins.copyInto(res);
+        return res;
     }
 
     static Vector<Noeud> commencer (Requis requis) {

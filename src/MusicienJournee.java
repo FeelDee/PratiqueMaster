@@ -3,7 +3,7 @@ import java.time.LocalTime;
 
 public class MusicienJournee {
     static final Integer POIDS_MINUTE_TROU = 1;
-    static final Double POIDS_DUREE = 0.2;
+    static final Double POIDS_DUREE = 0.05;
 
     LocalTime heureDebut;
     LocalTime heureFin;
@@ -17,8 +17,8 @@ public class MusicienJournee {
     }
 
     //retourne le poids d'ajout, pas le poids complet
-    long ajouterPratique(Pratique pratique) {
-        long poids = 0;
+    Long ajouterPratique(Pratique pratique) {
+        long poids = 0L;
 
         if (pratique.heureDebut != this.heureFin) {
             long trou = Duration.between(this.heureFin, pratique.heureDebut).toMinutes();
