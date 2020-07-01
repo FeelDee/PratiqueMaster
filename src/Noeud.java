@@ -8,11 +8,13 @@ public class Noeud {
     Vector<Journee> planification;
 
     Requis requis;
+    AvancementAbs avancement;
 
-    private Noeud(Requis requis, Vector<Journee> planification) {
+    private Noeud(Requis requis, Vector<Journee> planification, AvancementAbs avancement) {
         this.poids = 0L;
         this.requis = requis;
         this.planification = planification;
+        this.avancement = avancement;
     }
 
     private Noeud(Noeud parent, Musique musique, LocalDate date) {
@@ -26,6 +28,7 @@ public class Noeud {
         planification = new Vector<>();
         for (Journee journee: parent.planification) {
             if (journee.date == date) {
+                // Ce serait une bonne idee d'encapsuler la copie d'une journee
                 Journee newJournee = journee.copy();
                 poids += newJournee.ajouterPratique(musique);
                 planification.add(newJournee);
@@ -33,6 +36,8 @@ public class Noeud {
                 planification.add(journee);
             }
         }
+
+        avancement = parent.avancement.ajouter(musique);
     }
 
     Noeud[] voisins() {
@@ -40,7 +45,7 @@ public class Noeud {
 
         for (Journee journee: planification) {
             for (Musique musique: requis.musiques) {
-                if (journee.peutAjouter(musique)) {
+                if (journee.peutAjouter(musique) && avancement.peutAjouter(musique)) {
                     voisins.add(new Noeud(this, musique, journee.date));
                 }
             }
@@ -51,7 +56,24 @@ public class Noeud {
         return res;
     }
 
-    static Vector<Noeud> commencer (Requis requis) {
+    boolean estComplet() {
+        return avancement.estComplet();
+    }
+
+    static Vector<Noeud> commencer (Requis requis, String typeAvancement) {
+        AvancementAbs avancement;
+        switch(typeAvancement) {
+            case "temps":
+                avancement = new AvancementTemps(requis, Duration.ofMinutes(90));
+                break;
+            case "pratiques":
+                avancement = new AvancementPratiques(requis);
+                break;
+            default:
+                return null;
+        }
+
+
         Vector<Noeud> graphe = new Vector<>();
         for (LocalDate date: requis.calendrier) {
             Vector<Noeud> nextGraphe = new Vector<>(graphe);
@@ -62,10 +84,10 @@ public class Noeud {
                      heure = heure.plusMinutes(30)) {
                     Vector<Journee> planif = new Vector<>(noeud.planification);
                     planif.add(new Journee(date, heure));
-                    nextGraphe.add(new Noeud(requis, planif));
+                    nextGraphe.add(new Noeud(requis, planif, avancement));
                 }
 
-                nextGraphe.add(new Noeud(requis, noeud.planification));
+                nextGraphe.add(new Noeud(requis, noeud.planification, avancement));
             }
 
             for (LocalTime heure = Requis.DEFAULT_HEURE_DEBUT;
@@ -73,7 +95,7 @@ public class Noeud {
                  heure = heure.plusMinutes(30)) {
                 Vector<Journee> planif = new Vector<>();
                 planif.add(new Journee(date, heure));
-                nextGraphe.add(new Noeud(requis, planif));
+                nextGraphe.add(new Noeud(requis, planif, avancement));
             }
 
             graphe = nextGraphe;

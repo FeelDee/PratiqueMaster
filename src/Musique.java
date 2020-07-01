@@ -14,17 +14,6 @@ public class Musique {
         this.pratiquesRequises = pratiquesRequises;
     }
 
-    boolean contient(Musicien musicien) {
-        boolean contient = false;
-        for (Musicien in: musiciens) {
-            if (in == musicien) {
-                contient = true;
-                break;
-            }
-        }
-        return contient;
-    }
-
     boolean checkDispos(LocalDateTime temps) {
         boolean res = true;
         for (Musicien musicien: musiciens) {

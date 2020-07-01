@@ -13,8 +13,8 @@ public class Main {
         Musicien sendy = new Musicien("Sendy", exempleDispos2());
         Musicien etienne = new Musicien("Étienne", exempleDispos3());
         Vector<Musique> musiques = new Vector<>();
-        musiques.add(new Musique("Hold the line", new Musicien[]{etienne, sendy}, Duration.ofMinutes(30), 3));
-        musiques.add(new Musique("Free Bird", new Musicien[]{etienne, thomas}, Duration.ofMinutes(30), 3));
+        musiques.add(new Musique("Hold the line", new Musicien[]{etienne, sendy}, Duration.ofMinutes(30), 2));
+        musiques.add(new Musique("Free Bird", new Musicien[]{etienne, thomas}, Duration.ofMinutes(30), 1));
 
         Requis requis = new Requis(calendrier, musiques);
         Graphe graphe = new Graphe(requis);
@@ -39,14 +39,14 @@ public class Main {
     }
     private static HashMap<LocalDateTime, Boolean> exempleDispos2() {
         HashMap<LocalDateTime, Boolean> res = new HashMap<>();
-        res.put(LocalDateTime.of(2020, 6, 29, 18, 0), true);
-        res.put(LocalDateTime.of(2020, 6, 29, 18, 15), true);
-        res.put(LocalDateTime.of(2020, 6, 29, 18, 45), true);
+        res.put(LocalDateTime.of(2020, 6, 29, 19, 0), true);
+        res.put(LocalDateTime.of(2020, 6, 29, 19, 15), true);
+        res.put(LocalDateTime.of(2020, 6, 29, 19, 30), true);
         res.put(LocalDateTime.of(2020, 6, 29, 19, 45), true);
+        res.put(LocalDateTime.of(2020, 6, 30, 18, 0), true);
+        res.put(LocalDateTime.of(2020, 6, 30, 18, 15), true);
+        res.put(LocalDateTime.of(2020, 6, 30, 19, 30), true);
         res.put(LocalDateTime.of(2020, 6, 30, 19, 45), true);
-        res.put(LocalDateTime.of(2020, 6, 30, 20, 0), true);
-        res.put(LocalDateTime.of(2020, 6, 30, 20, 15), true);
-        res.put(LocalDateTime.of(2020, 6, 30, 20, 30), true);
         return res;
     }
     private static HashMap<LocalDateTime, Boolean> exempleDispos3() {
