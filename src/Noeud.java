@@ -15,7 +15,7 @@ public class Noeud {
         this.planification = planification;
     }
 
-    private Noeud(Noeud parent, Musique musique, Duration duree, LocalDate date) {
+    private Noeud(Noeud parent, Musique musique, LocalDate date) {
         //immutable
         this.poids  = parent.poids;
 
@@ -27,7 +27,7 @@ public class Noeud {
         for (Journee journee: parent.planification) {
             if (journee.date == date) {
                 Journee newJournee = journee.copy();
-                poids += newJournee.ajouterPratique(musique, duree);
+                poids += newJournee.ajouterPratique(musique);
                 planification.add(newJournee);
             } else {
                 planification.add(journee);
@@ -40,7 +40,9 @@ public class Noeud {
 
         for (Journee journee: planification) {
             for (Musique musique: requis.musiques) {
-                voisins.add(new Noeud(this, musique, Duration.ofMinutes(15), journee.date));
+                if (journee.peutAjouter(musique)) {
+                    voisins.add(new Noeud(this, musique, journee.date));
+                }
             }
         }
 

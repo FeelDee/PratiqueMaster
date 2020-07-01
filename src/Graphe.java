@@ -15,7 +15,7 @@ public class Graphe {
     //Dijkstra power
     Noeud meilleurePlanification() {
 
-        // Heap pour obtenir le prochain noeud (qui le plus faible poids)
+        // Heap pour obtenir le prochain noeud (qui a le plus faible poids)
         PriorityQueue< Pair<Long, Noeud> > heap = new PriorityQueue<>(10, new HeapComparator());
 
         Vector<Noeud> noeuds = Noeud.commencer(requis);
@@ -31,7 +31,7 @@ public class Graphe {
                 heap.offer(new Pair<>(voisin.poids, voisin));
             }
             ++i;
-        } while(i < 10000 && heap.size() > 0);
+        } while(i < 154 && heap.size() > 0);
 
         return heap.poll().getValue();
     }

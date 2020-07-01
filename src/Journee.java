@@ -1,10 +1,13 @@
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Vector;
 
 public class Journee {
-    static final Integer POIDS_AJOUT_MUSICIEN = 200;
+    private static final Integer POIDS_AJOUT_MUSICIEN = 200;
+    static final Integer MINUTE_INCREMENT = 15;
 
     LocalDate date;
     LocalTime heureDebut;
@@ -12,17 +15,23 @@ public class Journee {
 
     Vector<Pratique> pratiques;
     Vector<MusicienJournee> musiciens;
+    HashSet<Musique> musiques;
 
     public Journee(LocalDate date, LocalTime heureDebut) {
         this.date = date;
         this.heureDebut = this.heureFin = heureDebut;
         this.pratiques = new Vector<>();
         this.musiciens = new Vector<>();
+        this.musiques = new HashSet<>();
     }
 
-    Long ajouterPratique(Musique musique, Duration duree) {
+    boolean peutAjouter(Musique musique) {
+        return !musiques.contains(musique) && checkDispos(musique);
+    }
+
+    Long ajouterPratique(Musique musique) {
         Long poids = 0L;
-        Pratique pratique = new Pratique(musique, heureFin, heureFin.plus(duree));
+        Pratique pratique = new Pratique(musique, heureFin, heureFin.plus(musique.tempsPratique));
 
         for (Musicien musicien: musique.musiciens) {
             MusicienJournee mj = findMusicien(musicien);
@@ -35,6 +44,7 @@ public class Journee {
         }
 
         heureFin = pratique.heureFin;
+        musiques.add(musique);
         pratiques.add(pratique);
         return poids;
     }
@@ -46,6 +56,7 @@ public class Journee {
 
         //shallow copy of values
         copy.pratiques = new Vector<>(pratiques);
+        copy.musiques = new HashSet<>(musiques);
 
         //deep copy
         for (MusicienJournee mj: musiciens) {
@@ -64,5 +75,16 @@ public class Journee {
             }
         }
         return resultat;
+    }
+
+    private boolean checkDispos(Musique musique) {
+        boolean res = true;
+        LocalTime dernierePeriode = heureFin.plus(musique.tempsPratique).minus(Duration.ofMinutes(MINUTE_INCREMENT));
+        for (LocalTime heure = heureFin;
+             heure.compareTo(dernierePeriode) <= 0;
+             heure = heure.plus(Duration.ofMinutes(MINUTE_INCREMENT))) {
+            res &= musique.checkDispos(LocalDateTime.of(date, heure));
+        }
+        return res;
     }
 }
