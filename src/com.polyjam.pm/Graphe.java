@@ -1,7 +1,7 @@
+package com.polyjam.pm;
+
 import javafx.util.Pair;
 
-import java.lang.reflect.Parameter;
-import java.sql.SQLOutput;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Vector;
@@ -26,14 +26,12 @@ public class Graphe {
         }
 
         Noeud noeud;
-        Integer i = 0;
         do {
             noeud = heap.poll().getValue(); // le heap n'est jamais vide
             Noeud[] voisins = noeud.voisins();
             for(Noeud voisin: voisins) {
                 heap.offer(new Pair<>(voisin.poids, voisin));
             }
-            ++i;
         } while(!noeud.estComplet() && heap.size() > 0);
 
         System.out.println(noeud.estComplet());

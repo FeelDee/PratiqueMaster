@@ -1,3 +1,5 @@
+package com.polyjam.pm;
+
 import java.time.Duration;
 
 public class AvancementTemps extends AvancementAbs {

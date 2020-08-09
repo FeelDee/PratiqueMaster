@@ -1,3 +1,5 @@
+package com.polyjam.pm;
+
 public class AvancementPratiques extends AvancementAbs {
     AvancementPratiques(Requis requis) {
         super(requis);

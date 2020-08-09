@@ -1,3 +1,5 @@
+package com.polyjam.pm;
+
 import java.util.HashMap;
 
 public abstract class AvancementAbs {
