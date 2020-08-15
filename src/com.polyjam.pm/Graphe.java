@@ -10,8 +10,9 @@ public class Graphe {
     private Requis requis;
     private String typeAvancement;
 
-    Graphe(Requis requis) {
+    Graphe(Requis requis, String typeAvancement) {
         this.requis = requis;
+        this.typeAvancement = typeAvancement;
     }
 
     //Dijkstra power

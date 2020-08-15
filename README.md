@@ -34,5 +34,7 @@ sans avoir à recommencer les calculs.
 Ces calculs prendront néanmoins beaucoup de temps, on va devoir optimiser un max.
 
 Build:
-./src/com.polyjam.pm$ javac -d ../../build *.class
-./build$  jar cfe PratiqueMaster.jar com.polyjam.pm.Main com/polyjam/pm/*.class
+`mkdir build`
+`javac -classpath libs/gson-2.8.6.jar -d build src/com.polyjam.pm/*.java`
+`cd build`
+`jar cfe PratiqueMaster.jar com.polyjam.pm.Main com/polyjam/pm/*.class`
